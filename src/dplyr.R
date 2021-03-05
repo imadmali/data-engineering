@@ -1,16 +1,7 @@
 library(dplyr)
 
-N <- 10
-num_ids <- 5
-id_values <- LETTERS[1:num_ids]
-fact_table <- data.frame(id = sample(id_values, size=N, replace=TRUE),
-                         v0 = rnorm(N, 0, 1),
-                         v1 = rbinom(N, 10, 0.5),
-                         v3 = sample(c("Y","N"), size=N, replace=TRUE))
-
-dim_table <- data.frame(identifier = id_values,
-                        info = paste0("meta_", id_values),
-                        region = sample(1:3, size=num_ids, replace=TRUE))
+fact_table <- read.csv('./data/fact_table.csv')
+dim_table <- read.csv('./data/dim_table.csv')
 
 ### RENAME
 
@@ -37,7 +28,7 @@ fact_table %>%
 ### CONDITIONS (CASE STATEMENTS)
 
 fact_table %>%
-  mutate(new_column = if_else(v3 == 'Y', 1, 0)) %>%
+  mutate(new_column = if_else(v2 == 'Y', 1, 0)) %>%
   head(3)
 
 
@@ -88,21 +79,21 @@ fact_table %>%
 
 # lag window
 fact_table %>%
-  group_by(v3) %>%
+  group_by(v2) %>%
   arrange(v0) %>%
   mutate(v0_lag = lag(v0, 1, NA))
 
 # window sum (not supported in dplyr but you can use RcppRoll)
 fact_table %>%
-  group_by(v3) %>%
-  arrange(v3, v1) %>%
+  group_by(v2) %>%
+  arrange(v2, v1) %>%
   mutate(v1_sum = RcppRoll::roll_sum(v1, 2, align="right", fill=NA),
          v1_sum_left = RcppRoll::roll_sum(v1, 2, align="left", fill=NA))
 
 # cumulative sum
 fact_table %>%
-  group_by(v3) %>%
-  arrange(v3, v1) %>%
+  group_by(v2) %>%
+  arrange(v2, v1) %>%
   mutate(v1_sum = cumsum(v1))
 
 ### JOIN
