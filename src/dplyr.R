@@ -1,5 +1,7 @@
 library(dplyr)
 
+### READ DATA
+
 fact_table <- read.csv('./data/fact_table.csv')
 dim_table <- read.csv('./data/dim_table.csv')
 
@@ -71,8 +73,9 @@ fact_table %>%
 fact_table %>%
   group_by(id) %>%
   summarize(N = n(),
-            sum_v0 = sum(v0),
-            max_v1 = max(v1)) %>%
+            v0_sum = sum(v0),
+            v1_sum = sum(v1),
+            v1_max = max(v1)) %>%
   head(3)
 
 ### WINDOW
