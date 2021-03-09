@@ -11,9 +11,11 @@ fact_table.rename(columns={'id': 'identifier'})
 
 ### CREATE/DROP COLUMNS
 
+# create
 fact_table['new_column'] = 'foo'
 fact_table['new_column'] = fact_table['v1'] + 1
 
+# drop
 fact_table = fact_table.drop(columns='new_column')
 
 ### SELECT

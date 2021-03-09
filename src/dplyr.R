@@ -13,12 +13,18 @@ fact_table %>%
 
 ### CREATE/DROP COLUMNS
 
+# create
 fact_table %>%
   mutate(new_column = "foo") %>%
   head(3)
 
 fact_table %>%
   mutate(new_column = v1+1) %>%
+  head(3)
+
+# drop
+fact_table %>%
+  select(-v1) %>%
   head(3)
 
 ### SELECT
