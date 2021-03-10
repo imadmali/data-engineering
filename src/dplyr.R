@@ -35,24 +35,10 @@ fact_table %>%
 
 ### CONDITIONS (CASE STATEMENTS)
 
+# simple
 fact_table %>%
   mutate(new_column = if_else(v2 == 'Y', 1, 0)) %>%
   head(3)
-
-
-f <- function(id, v0) {
-  if (id == "A" & v0 < 0)
-    return('Y')
-  else if (id %in% c('D','E') & v0 > 0)
-    return('N')
-  else
-    return(NA)
-}
-
-fact_table %>%
-  rowwise() %>%
-  mutate(new_column = f(id, v0)) %>%
-  head(5)
 
 ### SORTING
 
@@ -113,3 +99,19 @@ fact_table %>%
 ### UNION
 
 union_all(fact_table[1:5,],fact_table[6:10,])
+
+### UDF
+
+f <- function(id, v0) {
+  if (id == "A" & v0 < 0)
+    return('Y')
+  else if (id %in% c('D','E') & v0 > 0)
+    return('N')
+  else
+    return(NA)
+}
+
+fact_table %>%
+  rowwise() %>%
+  mutate(new_column = f(id, v0)) %>%
+  head(5)

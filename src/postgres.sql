@@ -35,6 +35,12 @@ FROM fact_table;
 
 /* CONDITIONS (CASE STATEMENTS) */
 
+-- simple
+SELECT *
+  , CASE WHEN v2 = 'Y' THEN 1 ELSE 0 END new_column
+FROM fact_table;
+
+-- case statment
 SELECT *
   , CASE
       WHEN (id = 'A' AND v0 < 0) THEN 'Y'

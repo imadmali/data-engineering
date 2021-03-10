@@ -31,15 +31,8 @@ fact_table.iloc[:, [0,1]]
 
 ### CONDITIONS (CASE STATEMENTS)
 
-def f(row):
-    if row['id'] == 'A' and row['v0'] < 0:
-        return('Y')
-    elif (row['id'] in ['B','D','E']) and row['v0'] > 0:
-        return('N')
-    else:
-        return(None)
-
-fact_table.apply(f, axis=1)
+# simple
+fact_table['v2'].apply(lambda x: 1 if x == 'Y' else 0)
 
 ### SORTING
 
@@ -83,3 +76,15 @@ fact_table.merge(dim_table, left_on='id', right_on='identifier', how='left')
 ### UNION
 
 pd.concat([fact_table.iloc[:5], fact_table.iloc[5:]])
+
+### UDF
+
+def udf_f(row):
+    if row['id'] == 'A' and row['v0'] < 0:
+        return('Y')
+    elif (row['id'] in ['B','D','E']) and row['v0'] > 0:
+        return('N')
+    else:
+        return(None)
+
+fact_table.apply(udf_f, axis=1)
