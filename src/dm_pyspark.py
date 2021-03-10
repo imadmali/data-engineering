@@ -42,7 +42,7 @@ fact_table.select(*column_names).show()
 
 # simple
 fact_table.withColumn('new_column',
-    when(col('v2')=='Y'), 1).otherwise(0).show()
+    when(col('v2')=='Y', 1).otherwise(0)).show()
 
 # case statements
 fact_table.withColumn('new_column',
@@ -100,6 +100,7 @@ DataFrame.union(fact_table, fact_table)
 reduce(DataFrame.union, [fact_table, fact_table, fact_table]).show()
 
 ### UDF
+print('UDF')
 
 def udf_f(id, v0):
     if (id == 'A') and (v0 <0):
