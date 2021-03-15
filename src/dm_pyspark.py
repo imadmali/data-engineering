@@ -44,7 +44,7 @@ fact_table.select(*column_names).show()
 fact_table.withColumn('new_column',
     when(col('v2')=='Y', 1).otherwise(0)).show()
 
-# case statements
+# case statement
 fact_table.withColumn('new_column',
     when((col('id') == 'A') & (col('v0') < 0), 'Y').\
     when((col('id').isin(['B','D','E'])) & (col('v0') > 0), 'N').\

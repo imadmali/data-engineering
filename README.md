@@ -13,7 +13,7 @@ Currently the following language/frameworks are covered:
 
 The following data manipulations are covered:
 
-1. [Read](#pookie)
+1. [Read](#read-data)
 2. Rename columns
 3. Create/drop columns
 4. Select
@@ -26,7 +26,7 @@ The following data manipulations are covered:
 
 import pandas as pd
 
-### <a name="pookie"></a> READ DATA 
+### <a name="read-data"></a> READ DATA 
 
 **python-pandas**
 ```python

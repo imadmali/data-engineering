@@ -2,6 +2,14 @@
 
 -- not applicable; use select statement
 
+CREATE TABLE fact_table
+(id CHAR, v0 FLOAT, v1 INT, v2 CHAR);
+COPY fact_table FROM '/data/fact_table.csv' DELIMITER ',' CSV HEADER;
+
+CREATE TABLE dim_table
+(identifier CHAR, info VARCHAR, region INT);
+COPY fact_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
+
 /* RENAME */
 
 SELECT id AS identifier
@@ -52,7 +60,7 @@ FROM fact_table;
 /* SORTING */
 
 SELECT id
-  , v1
+  , v0
 FROM fact_table
 ORDER BY id, v0 DESC;
 
@@ -79,7 +87,7 @@ WHERE id NOT IN ('A','B');
 -- filter nulls
 SELECT *
 FROM fact_table
-WHERE id IS NOT NULL;
+WHERE id IS NULL;
 
 SELECT *
 FROM fact_table
@@ -87,7 +95,8 @@ WHERE id IS NOT NULL;
 
 /* GROUP BY */
 
-SELECT SUM(v0) AS sum_v0
+SELECT id
+  , SUM(v0) AS sum_v0
   , SUM(v1) AS sum_v1
   , COUNT(v1) AS count_v1
 FROM fact_table
@@ -99,16 +108,19 @@ GROUP BY id;
 SELECT *
   , LAG(v0, 1) OVER (PARTITION BY id ORDER BY v0)
 FROM fact_table
+ORDER BY id, v0;
 
 -- window sum
 SELECT *
-  , SUM(v0) OVER (PARTITION BY id ORDER BY v0 ROWS 1 PRECEDING AND CURRENT ROW)
+  , SUM(v0) OVER (PARTITION BY id ORDER BY v0 ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)
 FROM fact_table
+ORDER BY id, v0;
 
 -- cumulative sum
 SELECT *
-  , SUM(v0) OVER (PARTITION BY id ORDER BY v0 ROWS UNBOUND PRECEDING AND CURRENT ROW)
+  , SUM(v0) OVER (PARTITION BY id ORDER BY v0 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
 FROM fact_table
+ORDER BY id, v0;
 
 /* JOIN */
 
@@ -120,9 +132,11 @@ ON f.id = d.identifier;
 /* UNION */
 
 SELECT *
+  , 0 AS duplicate
 FROM fact_table
 UNION
 SELECT *
+  , 1 AS duplicate
 FROM fact_table;
 
 /* UDF */
@@ -135,9 +149,10 @@ $$
     CASE
       WHEN (id = 'A' AND v0 < 0) THEN 'Y'
       WHEN (id IN ('B','D','E') AND v0 > 0) THEN 'N'
-      ELSE NULL;
+      ELSE NULL END;
 $$
 LANGUAGE SQL;
+-- \df to view created UDFs
 
 SELECT *
   , udf_f(id, v0)
