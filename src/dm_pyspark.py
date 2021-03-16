@@ -13,7 +13,7 @@ dim_table = spark.read.csv('./data/dim_table.csv', inferSchema=True, header=True
 
 ### RENAME
 
-# one columns
+# one column
 fact_table.withColumnRenamed('id', 'identifier').show()
 
 # multiple columns

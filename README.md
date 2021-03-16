@@ -14,19 +14,21 @@ Currently the following language/frameworks are covered:
 The following data manipulations are covered:
 
 1. [Read](#read-data)
-2. Rename columns
-3. Create/drop columns
-4. Select
-5. Conditions (case statements)
-6. Sorting
-7. Filter/where
-8. Group by
-9. Window functions
-10. UDFs
+2. [Rename columns](#rename-columns)
+3. [Create/drop columns](#create-columns)
+4. [Select](#select)
+5. [Conditions (case statements)](#conditions)
+6. [Sorting](#sorting)
+7. [Filter/where](#filter)
+8. [Group by](#groupby)
+9. [Window functions](#window-functions)
+10. [Join](#join)
+11. [Union](#union)
+10. [UDFs](#udf)
 
 import pandas as pd
 
-### <a name="read-data"></a> READ DATA 
+### <a name="read-data"></a> READ DATA
 
 **python-pandas**
 ```python
@@ -43,7 +45,7 @@ dim_table = pd.read_csv('./data/dim_table.csv')
 ```sql
 ```
 
-### RENAME
+### <a name="rename-columns"></a> RENAME
 
 **python-pandas**
 ```python
@@ -61,7 +63,7 @@ fact_table.rename(columns={'id': 'identifier'})
 ```
 
 
-### CREATE/DROP COLUMNS
+### <a name="create-columns"></a> CREATE/DROP COLUMNS
 
 **python-pandas**
 ```python
@@ -83,7 +85,7 @@ fact_table = fact_table.drop(columns='new_column')
 ```sql
 ```
 
-### SELECT
+### <a name="select"></a> SELECT
 
 **python-pandas**
 ```python
@@ -107,7 +109,7 @@ fact_table.iloc[:, [0,1]]
 ```sql
 ```
 
-### CONDITIONS (CASE STATEMENTS)
+### <a name="conditions"></a> CONDITIONS (CASE STATEMENTS)
 
 **python-pandas**
 ```python
@@ -125,7 +127,7 @@ fact_table['v2'].apply(lambda x: 1 if x == 'Y' else 0)
 ```sql
 ```
 
-### SORTING
+### <a name="sorting"></a> SORTING
 
 **python-pandas**
 ```python
@@ -142,7 +144,7 @@ fact_table.sort_values(by=['id','v0'], ascending=[True,False])
 ```sql
 ```
 
-### FILTER/WHERE
+### <a name="filter"></a> FILTER/WHERE
 
 **python-pandas**
 ```python
@@ -169,7 +171,7 @@ fact_table.loc[fact_table['id'].notna()]
 ```sql
 ```
 
-### GROUP BY
+### <a name="groupby"></a> GROUP BY
 
 **python-pandas**
 ```python
@@ -188,7 +190,7 @@ fact_table_gpd.reset_index()
 ```sql
 ```
 
-### WINDOW
+### <a name="window-functions"></a> WINDOW
 
 **python-pandas**
 ```python
@@ -212,7 +214,7 @@ fact_table.sort_values(['id','v0']).groupby('id')['v0'].expanding(1).sum().reset
 ```sql
 ```
 
-### JOIN
+### <a name="join"></a> JOIN
 
 **python-pandas**
 ```python
@@ -229,7 +231,7 @@ fact_table.merge(dim_table, left_on='id', right_on='identifier', how='left')
 ```sql
 ```
 
-### UNION
+### <a name="union"></a> UNION
 
 **python-pandas**
 ```python
@@ -246,7 +248,7 @@ pd.concat([fact_table.iloc[:5], fact_table.iloc[5:]])
 ```sql
 ```
 
-### UDF
+### <a name="udf"></a> UDF
 
 **python-pandas**
 ```python

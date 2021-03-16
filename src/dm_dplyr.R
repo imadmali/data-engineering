@@ -8,57 +8,48 @@ dim_table <- read.csv('./data/dim_table.csv')
 ### RENAME
 
 fact_table %>%
-  rename(identifier = id) %>%
-  head(3)
+  rename(identifier = id)
 
 ### CREATE/DROP COLUMNS
 
 # create
 fact_table %>%
-  mutate(new_column = "foo") %>%
-  head(3)
+  mutate(new_column = "foo")
 
 fact_table %>%
-  mutate(new_column = v1+1) %>%
-  head(3)
+  mutate(new_column = v1+1)
 
 # drop
 fact_table %>%
-  select(-v1) %>%
-  head(3)
+  select(-v1)
 
 ### SELECT
 
 fact_table %>%
-  select(id, v0) %>%
-  head(3)
+  select(id, v0)
 
 ### CONDITIONS (CASE STATEMENTS)
 
 # simple
 fact_table %>%
-  mutate(new_column = if_else(v2 == 'Y', 1, 0)) %>%
-  head(3)
+  mutate(new_column = if_else(v2 == 'Y', 1, 0))
 
 ### SORTING
 
 fact_table %>%
-  arrange(id, desc(v0)) %>%
-  head(3)
+  arrange(id, desc(v0))
 
 ### FILTER/WHERE
 
+# filter
 fact_table %>%
-  filter(v0 > 0) %>%
-  head(3)
+  filter(v0 > 0)
 
+# filter using list
 fact_table %>%
-  filter(id %in% c('A','B','E')) %>%
-  head(3)
-
+  filter(id %in% c('A','B','E'))
 fact_table %>%
-  filter(!id %in% c('A','B','E')) %>%
-  head(3)
+  filter(!id %in% c('A','B','E'))
 
 ### GROUP BY
 
@@ -67,8 +58,7 @@ fact_table %>%
   summarize(N = n(),
             v0_sum = sum(v0),
             v1_sum = sum(v1),
-            v1_max = max(v1)) %>%
-  head(3)
+            v1_max = max(v1))
 
 ### WINDOW
 
@@ -102,7 +92,7 @@ union_all(fact_table[1:5,],fact_table[6:10,])
 
 ### UDF
 
-f <- function(id, v0) {
+udf_f <- function(id, v0) {
   if (id == "A" & v0 < 0)
     return('Y')
   else if (id %in% c('D','E') & v0 > 0)
@@ -113,5 +103,4 @@ f <- function(id, v0) {
 
 fact_table %>%
   rowwise() %>%
-  mutate(new_column = f(id, v0)) %>%
-  head(5)
+  mutate(new_column = udf_f(id, v0))

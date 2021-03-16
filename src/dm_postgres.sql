@@ -1,6 +1,7 @@
 /* READ DATA */
 
--- not applicable; use select statement
+-- Data isn't stored into a variable's memory
+-- but does need to be written to a table in the database (shown below).
 
 CREATE TABLE fact_table
 (id CHAR, v0 FLOAT, v1 INT, v2 CHAR);
@@ -152,7 +153,7 @@ $$
       ELSE NULL END;
 $$
 LANGUAGE SQL;
--- \df to view created UDFs
+-- \df to view created functions
 
 SELECT *
   , udf_f(id, v0)
