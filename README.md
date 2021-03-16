@@ -1,8 +1,8 @@
 # Data Manipulation
 
-The purpose of this repo is to show common data manipulations in different languages/frameworks.
+The purpose of this repo is to show common data manipulations in different languages/packages.
 
-Currently the following language/frameworks are covered:
+Currently the following languages/packages are covered:
 * Python
   * pandas
   * pyspark
@@ -26,23 +26,77 @@ The following data manipulations are covered:
 11. [Union](#union)
 10. [UDFs](#udf)
 
-import pandas as pd
+The queries use the following data.
 
-### <a name="read-data"></a> READ DATA
+`fct_table`
 
-**python-pandas**
+```
+id |         v0         | v1 | v2
+----+--------------------+----+----
+ A  |  4.162335551296317 |  8 | N
+ E  | -3.463043847744304 |  3 | Y
+ A  |  4.116661961802513 |  2 | N
+ B  | 2.1683668815994643 |  4 | N
+ C  |  5.940306422779212 |  5 | Y
+ B  | -5.350971634624138 |  3 | Y
+ B  |  3.094433010031948 |  5 | N
+ B  | -3.568400083224966 |  6 | N
+ D  | -6.691328447186232 |  3 | Y
+ A  | -5.293135681469833 |  3 | N
+```
+
+`dim_table`
+
+```
+identifier |  info  | region
+------------+--------+--------
+ A          | meta_A |      3
+ B          | meta_B |      1
+ C          | meta_C |      2
+ D          | meta_D |      3
+ E          | meta_E |      2
+```
+
+## <a name="read-data"></a> READ DATA
+
+**Python - Pandas**
+
 ```python
+# df = pd.read_csv(...)
 fact_table = pd.read_csv('./data/fact_table.csv')
 dim_table = pd.read_csv('./data/dim_table.csv')
 ```
-**python-pyspark**
+
+**Python - PySpark**
+
 ```python
+# df = spark.read.parquet(...)
+fact_table = spark.read.csv('./data/fact_table.csv', inferSchema=True, header=True)
+dim_table = spark.read.csv('./data/dim_table.csv', inferSchema=True, header=True)
 ```
-**r-dplyr**
+
+**R - dplyr**
+
 ```r
+fact_table <- read.csv('./data/fact_table.csv')
+dim_table <- read.csv('./data/dim_table.csv')
 ```
-**sql-postgres**
+
+**SQL - Postgres**
+
 ```sql
+/*
+Data isn't stored into a variable's memory
+but does need to be written to a table in the database (shown below).
+*/
+
+CREATE TABLE fact_table
+(id CHAR, v0 FLOAT, v1 INT, v2 CHAR);
+COPY fact_table FROM '/data/fact_table.csv' DELIMITER ',' CSV HEADER;
+
+CREATE TABLE dim_table
+(identifier CHAR, info VARCHAR, region INT);
+COPY fact_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
 ```
 
 ### <a name="rename-columns"></a> RENAME
