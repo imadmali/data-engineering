@@ -74,6 +74,10 @@ dim_table = pd.read_csv('./data/dim_table.csv')
 # df = spark.read.parquet(...)
 fact_table = spark.read.csv('./data/fact_table.csv', inferSchema=True, header=True)
 dim_table = spark.read.csv('./data/dim_table.csv', inferSchema=True, header=True)
+# reading multiple partitions
+# df = spark.read.csv('s3://data/fact_table/year=2021/month={1,3}/*')
+# reading partition range
+# df = spark.read.csv('s3://data/fact_table/year=2021/month=[1-3]/*')
 ```
 
 **R - dplyr**
