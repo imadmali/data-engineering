@@ -76,6 +76,10 @@ SELECT *
 FROM fact_table
 WHERE v0 > 0 AND v1 <= 5;
 
+SELECT *
+FROM fact_table
+WHERE id ~ 'A|B';
+
 -- filter using list
 SELECT *
 FROM fact_table

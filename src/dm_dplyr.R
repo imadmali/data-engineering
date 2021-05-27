@@ -51,6 +51,10 @@ fact_table %>%
 fact_table %>%
   filter(!id %in% c('A','B','E'))
 
+# filter using regex
+fact_table %>%
+  filter(grepl('A|B', id))
+
 ### GROUP BY
 
 fact_table %>%
