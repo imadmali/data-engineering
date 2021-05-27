@@ -67,6 +67,9 @@ fact_table.filter(~col('id').isin(['A','B'])).show()
 fact_table.filter(col('id').isNull()).show()
 fact_table.filter(col('id').isNotNull()).show()
 
+# filter regex
+fact_table.filter(col('id').rlike('A|B')).show()
+
 ### GROUP BY
 
 fact_table.groupBy('id').agg(sum('v0').alias('sum_v0'),

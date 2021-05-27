@@ -337,6 +337,9 @@ fact_table.loc[~fact_table['id'].isin(['A','B']), :]
 # filter nulls
 fact_table.loc[fact_table['id'].isna()]
 fact_table.loc[fact_table['id'].notna()]
+
+# filter using regex
+fact_table.loc[fact_table['id'].str.contains('A|B')]
 ```
 
 **Python - PySpark**
@@ -352,6 +355,9 @@ fact_table.filter(~col('id').isin(['A','B'])).show()
 # filter nulls
 fact_table.filter(col('id').isNull()).show()
 fact_table.filter(col('id').isNotNull()).show()
+
+# filter using regex
+fact_table.filter(col('id').rlike('A|B')).show()
 ```
 
 **R - dplyr**
@@ -367,6 +373,9 @@ fact_table %>%
 fact_table %>%
   filter(!id %in% c('A','B','E'))
 
+# filter using regex
+fact_table %>%
+  filter(grepl('A|B', id))
 ```
 
 **SQL - Postgres**
@@ -398,6 +407,11 @@ WHERE id IS NULL;
 SELECT *
 FROM fact_table
 WHERE id IS NOT NULL;
+
+-- filter using regex
+SELECT *
+FROM fact_table
+WHERE id ~ 'A|B';
 ```
 
 ## <a name="groupby"></a> Group By

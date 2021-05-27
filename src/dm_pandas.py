@@ -52,6 +52,9 @@ fact_table.loc[~fact_table['id'].isin(['A','B']), :]
 fact_table.loc[fact_table['id'].isna()]
 fact_table.loc[fact_table['id'].notna()]
 
+# filter regex
+fact_table.loc[fact_table['id'].str.contains('A|B')]
+
 ### GROUP BY
 
 fact_table_gpd = fact_table.groupby('id').agg({'v0': 'sum', 'v1': ['sum','max']})
