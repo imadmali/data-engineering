@@ -162,3 +162,25 @@ LANGUAGE SQL;
 SELECT *
   , udf_f(id, v0)
 FROM fact_table;
+
+/* UDAF */
+
+CREATE OR REPLACE FUNCTION udaf_sum(a FLOAT, b FLOAT)
+RETURNS FLOAT
+AS
+$$
+  SELECT a + b
+$$
+LANGUAGE SQL;
+
+CREATE AGGREGATE agg_sum(FLOAT) (
+  SFUNC = udaf_sum,
+  STYPE = FLOAT,
+  INITCOND = 0
+);
+-- \da to view created aggregates
+
+SELECT agg_sum(v0) udaf_sum
+  , sum(v0) base_sum
+FROM fact_table
+GROUP BY id;
