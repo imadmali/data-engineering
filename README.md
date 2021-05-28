@@ -101,7 +101,7 @@ COPY fact_table FROM '/data/fact_table.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE dim_table
 (identifier CHAR, info VARCHAR, region INT);
-COPY fact_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
+COPY dim_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
 ```
 
 ## <a name="rename-columns"></a> Rename Columns
