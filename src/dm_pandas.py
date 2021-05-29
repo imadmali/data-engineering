@@ -76,6 +76,10 @@ fact_table.sort_values(['id','v0']).groupby('id')['v0'].rolling(2).sum().reset_i
 # cumulative sum
 fact_table.sort_values(['id','v0']).groupby('id')['v0'].expanding(1).sum().reset_index(drop=True)
 
+### PIVOT
+
+pd.pivot_table(fact_table, values='v1', index='id', columns='v2', aggfunc='sum', fill_value=0)
+
 ### JOIN
 
 fact_table.merge(dim_table, left_on='id', right_on='identifier', how='left')

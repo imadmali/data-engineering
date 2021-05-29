@@ -94,6 +94,10 @@ fact_table.withColumn('roll_sum_v0', sum('v0').over(window_spec))
 window_spec = Window.partitionBy('id').orderBy('v0').rowsBetween(Window.unboundedPreceding, Window.currentRow)
 fact_table.withColumn('cum_sum_v0', sum('v0').over(window_spec)).show()
 
+### PIVOT
+
+fact_table.groupBy('id').pivot('v2').sum('v1').fillna(0).show()
+
 ### JOIN
 
 fact_table.join(dim_table, on=[fact_table.id==dim_table.identifier], how='left').show()
