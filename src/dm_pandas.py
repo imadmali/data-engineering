@@ -5,6 +5,10 @@ import pandas as pd
 fact_table = pd.read_csv('./data/fact_table.csv')
 dim_table = pd.read_csv('./data/dim_table.csv')
 
+### SCHEMA
+
+fact_table.dtypes
+
 ### RENAME
 
 fact_table.rename(columns={'id': 'identifier'})

@@ -5,6 +5,10 @@ library(dplyr)
 fact_table <- read.csv('./data/fact_table.csv')
 dim_table <- read.csv('./data/dim_table.csv')
 
+### SCHEMA
+
+fact_table %>% summarize_all(class)
+
 ### RENAME
 
 fact_table %>%

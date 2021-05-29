@@ -11,6 +11,16 @@ CREATE TABLE dim_table
 (identifier CHAR, info VARCHAR, region INT);
 COPY fact_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
 
+/* SCHEMA */
+
+-- \d fact_table
+SELECT table_name
+  , column_name
+  , data_type
+  , character_maximum_length
+FROM information_schema.columns
+WHERE table_name = 'fact_table';
+
 /* RENAME */
 
 SELECT id AS identifier

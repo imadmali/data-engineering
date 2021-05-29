@@ -11,6 +11,10 @@ spark = SparkSession.builder.appName('data-manipulation').getOrCreate()
 fact_table = spark.read.csv('./data/fact_table.csv', inferSchema=True, header=True)
 dim_table = spark.read.csv('./data/dim_table.csv', inferSchema=True, header=True)
 
+### SCHEMA
+
+fact_table.printSchema()
+
 ### RENAME
 
 # one column
