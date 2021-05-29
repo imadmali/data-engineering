@@ -7,7 +7,7 @@ Currently the following languages/packages are covered.
   * pandas
   * pyspark
 * R
-  * dplyr
+  * dplyr/tidyr
 * SQL
   * postgres
 
@@ -578,7 +578,7 @@ pd.pivot_table(fact_table, values='v1', index='id', columns='v2', aggfunc='sum',
 fact_table.groupBy('id').pivot('v2').sum('v1').fillna(0).show()
 ```
 
-**R - dplyr**
+**R - tidyr**
 
 ```r
 fact_table %>%
