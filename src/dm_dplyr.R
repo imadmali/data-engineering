@@ -5,6 +5,10 @@ library(dplyr)
 fact_table <- read.csv('./data/fact_table.csv')
 dim_table <- read.csv('./data/dim_table.csv')
 
+### SCHEMA
+
+fact_table %>% summarize_all(class)
+
 ### RENAME
 
 fact_table %>%
@@ -85,10 +89,19 @@ fact_table %>%
   arrange(v2, v1) %>%
   mutate(v1_sum = cumsum(v1))
 
+### PIVOT
+
+fact_table %>%
+  pivot_wider(id_cols = id,
+              names_from = v2,
+              values_from = v1,
+              values_fill = 0,
+              values_fn = sum)
+
 ### JOIN
 
 fact_table %>%
-  left_join(dim_table, by=c("id"="identifier"))
+  left_join(dim_table, by = c("id"="identifier"))
 
 ### UNION
 

@@ -11,6 +11,10 @@ spark = SparkSession.builder.appName('data-manipulation').getOrCreate()
 fact_table = spark.read.csv('./data/fact_table.csv', inferSchema=True, header=True)
 dim_table = spark.read.csv('./data/dim_table.csv', inferSchema=True, header=True)
 
+### SCHEMA
+
+fact_table.printSchema()
+
 ### RENAME
 
 # one column
@@ -89,6 +93,10 @@ fact_table.withColumn('roll_sum_v0', sum('v0').over(window_spec))
 # cumulative sum
 window_spec = Window.partitionBy('id').orderBy('v0').rowsBetween(Window.unboundedPreceding, Window.currentRow)
 fact_table.withColumn('cum_sum_v0', sum('v0').over(window_spec)).show()
+
+### PIVOT
+
+fact_table.groupBy('id').pivot('v2').sum('v1').fillna(0).show()
 
 ### JOIN
 

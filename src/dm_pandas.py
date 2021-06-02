@@ -5,6 +5,10 @@ import pandas as pd
 fact_table = pd.read_csv('./data/fact_table.csv')
 dim_table = pd.read_csv('./data/dim_table.csv')
 
+### SCHEMA
+
+fact_table.dtypes
+
 ### RENAME
 
 fact_table.rename(columns={'id': 'identifier'})
@@ -71,6 +75,10 @@ fact_table.sort_values(['id','v0']).groupby('id')['v0'].rolling(2).sum().reset_i
 
 # cumulative sum
 fact_table.sort_values(['id','v0']).groupby('id')['v0'].expanding(1).sum().reset_index(drop=True)
+
+### PIVOT
+
+pd.pivot_table(fact_table, values='v1', index='id', columns='v2', aggfunc='sum', fill_value=0)
 
 ### JOIN
 

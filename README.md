@@ -7,25 +7,27 @@ Currently the following languages/packages are covered.
   * pandas
   * pyspark
 * R
-  * dplyr
+  * dplyr/tidyr
 * SQL
   * postgres
 
 The following data manipulations are covered.
 
 1. [Read](#read-data)
-2. [Rename columns](#rename-columns)
-3. [Create/drop columns](#create-columns)
-4. [Select](#select)
-5. [Conditions (case statements)](#conditions)
-6. [Sorting](#sorting)
-7. [Filter/where](#filter)
-8. [Group by](#groupby)
-9. [Window functions](#window-functions)
-10. [Join](#join)
-11. [Union](#union)
-12. [UDFs](#udf)
-13. [Appendix](#appendix)
+2. [Schema](#schema)
+3. [Rename columns](#rename-columns)
+4. [Create/drop columns](#create-columns)
+5. [Select](#select)
+6. [Conditions (case statements)](#conditions)
+7. [Sorting](#sorting)
+8. [Filter/where](#filter)
+9. [Group by](#groupby)
+10. [Window functions](#window-functions)
+11. [Pivot](#pivot)
+12. [Join](#join)
+13. [Union](#union)
+14. [UDFs](#udf)
+15. [Appendix](#appendix)
 
 The queries use the following data.
 
@@ -101,7 +103,39 @@ COPY fact_table FROM '/data/fact_table.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE dim_table
 (identifier CHAR, info VARCHAR, region INT);
-COPY fact_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
+COPY dim_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
+```
+
+## <a name="schema"></a> Schema
+
+**Python - Pandas**
+
+```python
+fact_table.dtypes
+```
+
+**Python - PySpark**
+
+```python
+fact_table.printSchema()
+```
+
+**R - dplyr**
+
+```r
+fact_table %>% summarize_all(class)
+```
+
+**SQL - Postgres**
+
+```sql
+-- \d fact_table
+SELECT table_name
+  , column_name
+  , data_type
+  , character_maximum_length
+FROM information_schema.columns
+WHERE table_name = 'fact_table';
 ```
 
 ## <a name="rename-columns"></a> Rename Columns
@@ -528,6 +562,44 @@ SELECT *
   , SUM(v0) OVER (PARTITION BY id ORDER BY v0 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
 FROM fact_table
 ORDER BY id, v0;
+```
+
+## <a name="pivot"></a> Pivot
+
+**Python - Pandas**
+
+```python
+pd.pivot_table(fact_table, values='v1', index='id', columns='v2', aggfunc='sum', fill_value=0)
+```
+
+**Python - PySpark**
+
+```python
+fact_table.groupBy('id').pivot('v2').sum('v1').fillna(0).show()
+```
+
+**R - tidyr**
+
+```r
+fact_table %>%
+  pivot_wider(id_cols = id,
+              names_from = v2,
+              values_from = v1,
+              values_fill = 0,
+              values_fn = sum)
+```
+
+**SQL - Postgres**
+
+```sql
+-- pivoting is done with crosstab which is enabled through the tablefunc extension.
+CREATE extension tablefunc;
+-- crosstab takes a SQL string: 'SELECT row, column, value FROM ...'
+SELECT id
+  , COALESCE(N, 0) AS "N"
+  , COALESCE(Y, 0) AS "Y"
+FROM crosstab('SELECT id, v2, SUM(v1)::INT FROM fact_table GROUP BY 1,2 ORDER BY 1,2')
+AS ct(id CHAR, N INT, Y INT);
 ```
 
 ## <a name="join"></a> Join

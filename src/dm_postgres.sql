@@ -11,6 +11,16 @@ CREATE TABLE dim_table
 (identifier CHAR, info VARCHAR, region INT);
 COPY fact_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
 
+/* SCHEMA */
+
+-- \d fact_table
+SELECT table_name
+  , column_name
+  , data_type
+  , character_maximum_length
+FROM information_schema.columns
+WHERE table_name = 'fact_table';
+
 /* RENAME */
 
 SELECT id AS identifier
@@ -126,6 +136,17 @@ SELECT *
   , SUM(v0) OVER (PARTITION BY id ORDER BY v0 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
 FROM fact_table
 ORDER BY id, v0;
+
+/* PIVOT */
+
+-- pivoting is done with crosstab which is enabled through the tablefunc extension.
+CREATE extension tablefunc;
+-- crosstab takes a SQL string: 'SELECT row, column, value FROM ...'
+SELECT id
+  , COALESCE(N, 0) AS "N"
+  , COALESCE(Y, 0) AS "Y"
+FROM crosstab('SELECT id, v2, SUM(v1)::INT FROM fact_table GROUP BY 1,2 ORDER BY 1,2')
+AS ct(id CHAR, N INT, Y INT);
 
 /* JOIN */
 
