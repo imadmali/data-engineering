@@ -2,6 +2,10 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, lit, when, sum, max, lag, DataFrame, udf
 from pyspark.sql.window import Window
 from pyspark.sql.types import StringType
+from pyspark.sql.types import *
+from pyspark.sql.functions import pandas_udf
+import numpy as np
+import pandas as pd
 from functools import reduce
 
 spark = SparkSession.builder.appName('data-manipulation').getOrCreate()
@@ -111,7 +115,6 @@ DataFrame.union(fact_table, fact_table)
 reduce(DataFrame.union, [fact_table, fact_table, fact_table]).show()
 
 ### UDF
-print('UDF')
 
 def udf_f(id, v0):
     if (id == 'A') and (v0 <0):
@@ -124,3 +127,11 @@ def udf_f(id, v0):
 udf_f_reg = udf(udf_f, StringType())
 
 fact_table.withColumn('new_column', udf_f_reg('id', 'v0')).show()
+
+### UDAF
+
+@pandas_udf("double")
+def udaf_f(x: pd.Series) -> float:
+   return(np.sum(x)/len(x))
+
+fact_table.groupBy('id').agg(udaf_f('v0').alias('mean')).show()
