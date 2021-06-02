@@ -121,3 +121,13 @@ udf_f <- function(id, v0) {
 fact_table %>%
   rowwise() %>%
   mutate(new_column = udf_f(id, v0))
+
+### UDAF
+
+udaf_f <- function(x) {
+  return(sum(x)/length(x))
+}
+
+fact_table %>%
+  group_by(id) %>%
+  summarize(mean = udaf_f(v0))

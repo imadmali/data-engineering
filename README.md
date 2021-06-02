@@ -26,7 +26,8 @@ The following data manipulations are covered.
 11. [Pivot](#pivot)
 12. [Join](#join)
 13. [Union](#union)
-14. [UDFs](#udf)
+14. [UDF](#udf)
+14. [UDAF](#udaf)
 15. [Appendix](#appendix)
 
 The queries use the following data.
@@ -738,6 +739,41 @@ LANGUAGE SQL;
 SELECT *
   , udf_f(id, v0)
 FROM fact_table;
+```
+
+## <a name="udaf"></a> UDAF
+
+**Python - Pandas**
+
+```python
+def udaf_f(x):
+    return(sum(x)/len(x))
+
+fact_table.groupby('id').agg({'v0': udaf_f})
+```
+
+**Python - PySpark**
+
+```python
+
+```
+
+**R - dplyr**
+
+```r
+udaf_f <- function(x) {
+  return(sum(x)/length(x))
+}
+
+fact_table %>%
+  group_by(id) %>%
+  summarize(mean = udaf_f(v0))
+```
+
+**SQL - Postgres**
+
+```sql
+
 ```
 
 ## <a name="appendix"></a> Appendix
