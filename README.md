@@ -26,7 +26,8 @@ The following data manipulations are covered.
 11. [Pivot](#pivot)
 12. [Join](#join)
 13. [Union](#union)
-14. [UDFs](#udf)
+14. [UDF](#udf)
+14. [UDAF](#udaf)
 15. [Appendix](#appendix)
 
 The queries use the following data.
@@ -738,6 +739,80 @@ LANGUAGE SQL;
 SELECT *
   , udf_f(id, v0)
 FROM fact_table;
+```
+
+## <a name="udaf"></a> UDAF
+
+**Python - Pandas**
+
+```python
+def udaf_f(x):
+    return(sum(x)/len(x))
+
+fact_table.groupby('id').agg({'v0': udaf_f})
+```
+
+**Python - PySpark**
+
+Here we use `spark.sql.functions.pandas_udf` to create a UDAF and apply it to a PySpark dataframe. The required dependencies to get this to work were:
+- `pyspark==3.1.2`
+- `pyarrow==4.0.1`
+- Adding `ARROW_PRE_0_15_IPC_FORMAT=1` to `conf/spark-env.sh`
+
+```python
+@pandas_udf("double")
+def udaf_f(x: pd.Series) -> float:
+   return(np.sum(x)/len(x))
+
+fact_table.groupBy('id').agg(udaf_f('v0').alias('mean')).show()
+```
+
+**R - dplyr**
+
+```r
+udaf_f <- function(x) {
+  return(sum(x)/length(x))
+}
+
+fact_table %>%
+  group_by(id) %>%
+  summarize(mean = udaf_f(v0))
+```
+
+**SQL - Postgres**
+
+```sql
+-- accumulator
+CREATE OR REPLACE FUNCTION float_accum(FLOAT[], FLOAT)
+RETURNS FLOAT[]
+AS
+$$
+  SELECT ARRAY[$1[1]+$2, $1[2]+1]
+$$
+LANGUAGE SQL;
+
+-- final mean calculation
+CREATE OR REPLACE FUNCTION float_mean(FLOAT[])
+RETURNS FLOAT
+AS
+$$
+  SELECT $1[1] / $1[2]
+$$
+LANGUAGE SQL;
+
+-- udaf to wrap everything together
+CREATE AGGREGATE udaf_f(FLOAT) (
+  SFUNC = float_accum,
+  STYPE = FLOAT[],
+  FINALFUNC = float_mean,
+  INITCOND = '{0,0}'
+);
+-- \da to view created aggregates
+
+SELECT udaf_f(v0) mean
+  , AVG(v0) base_sum
+FROM fact_table
+GROUP BY id;
 ```
 
 ## <a name="appendix"></a> Appendix

@@ -99,3 +99,10 @@ def udf_f(row):
         return(None)
 
 fact_table.apply(udf_f, axis=1)
+
+### UDAF
+
+def udaf_f(x):
+    return(sum(x)/len(x))
+
+fact_table.groupby('id').agg({'v0': udaf_f})
