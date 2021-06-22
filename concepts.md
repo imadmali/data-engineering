@@ -8,10 +8,17 @@ Below is a non-exhaustive laundry list of concepts that I've found useful to kno
 
 A data model organizes data assets and defines the relationship between them.
 Typically you might see it as an outline of database/schema design, the available tables, what the primary/foreign keys are (i.e. how tables can be linked together in relational databases).
+A popular model is **star schema** where you have a few "fact tables" that can be joined against several "dimension tables" for additional information. This is a special case of a **snowflake schema** model.
 
 ## Primary vs Foreign Keys
 
-TBD
+In a relational database a table's primary key is a column that uniquely identifies each record in the table.
+A foreign key is a column or set of columns that allow you to link (i.e. join) information from a given table to another table.
+
+## Database Normalization
+
+Database normalization reduces data redundancy.
+This is achieved by dividing large (wide) tables into smaller tables and linking them to other tables that can provide that additional information.
 
 ## Data Lineage
 
