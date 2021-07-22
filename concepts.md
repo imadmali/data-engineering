@@ -26,6 +26,14 @@ Data lineage describes what happens to the data as it moves from its origin to i
 This destination could be another data repository or it could be a machine learning model.
 As a data scientist it's helpful to understand data lineage since it help you determine whether the assumptions you're making in your modeling approach are appropriate.
 
+## OLTP vs OLAP
+
+OLTP (Online Transaction Processing) is responsible for storing data streamed from a device/user/etc (e.g. telemetry data).
+OLAP (Online Analytics Processing) takes information produced by OLTP systems and creates more complex data assets that combine/aggregate OLTP data in ways that are useful to the business (e.g. user lifetime spend).
+
+For example, in console gaming OLTP might involve recording data from the console as the user games.
+The OLAP might take this data and aggregate into how much time is spent in each game for the users' entire history.
+
 ## Partitioning
 
 Partitioning is the process of splitting up a table to make it more efficient to query.
@@ -65,7 +73,7 @@ This can be problematic when creating new shards since it requires updating the 
 This uses a lookup table (directory) to determine which determines that shard that each record should go into.
 This can be problematic when sharding on columns that have high cardinality as there will be a lot of records to maintain in the lookup table.
 
-## Columnar Data
+## Columnar vs Row-wise Data
 
 To understand a column store database it's useful to understand its counterpart, a *row store database*.
 Suppose you're querying a subset of columns of a data table.

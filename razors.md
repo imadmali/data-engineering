@@ -46,4 +46,4 @@
 
 🪒 Your prod role should be different than the role you develop with.
 
-🪒 Discuss the schema with stakeholders before you write.
+🪒 Discuss the schema with stakeholders before you start.
