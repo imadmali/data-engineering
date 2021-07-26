@@ -1,12 +1,27 @@
 # Data Engineering Concepts
 
-Working in industry as a data scientist I've found it useful to maintain some understanding of data engineering concepts, even if it's just at a high-level.
+As a data scientist I've found it useful to maintain some understanding of data engineering concepts, even if it's just at a high-level.
 This facilitates communication with data engineers who form part of the bridge between data and data scientists in most tech companies.
 Below is a non-exhaustive laundry list of concepts that I've found useful to know.
+
+## Database, Schema, and Table
+
+In relational data stores i.e. data stores that have tables which can be connected/joined to one another) you have various ways of organizing your data. From the smallest unit of collecting data to the largest we have records, tables, schemas, and databases.
+
+* A **record** (i.e. row in a table) contains various "column" entries which define the record.
+* A **table** is a way to store many records that have the same column names/types.
+It's an object that stores **tabular data**.
+*  A **table schema** defines the name and data type of the column in a table.
+Each record in the table must adhere to this schema.
+* A **database schema** is a logical collection of tables.
+For example, you might have a schema for tables that are responsible for transaction data and another schema for tables that are responsible for event data.
+* A **database** represents the highest level of organization and collection of data (i.e. schemas and tables).
+For example, there might be a database that stores production data which data scientists only have read access to, and a separate database which allows data scientists to have both read and write access.
 
 ## Data Model
 
 A data model organizes data assets and defines the relationship between them.
+Structured data is data that adheres to a data model.
 Typically you might see it as an outline of database/schema design, the available tables, what the primary/foreign keys are (i.e. how tables can be linked together in relational databases).
 A popular model is **star schema** where you have a few "fact tables" that can be joined against several "dimension tables" for additional information. This is a special case of a **snowflake schema** model.
 
@@ -73,14 +88,15 @@ This can be problematic when creating new shards since it requires updating the 
 This uses a lookup table (directory) to determine which determines that shard that each record should go into.
 This can be problematic when sharding on columns that have high cardinality as there will be a lot of records to maintain in the lookup table.
 
-## Columnar vs Row-wise Data
+## Columnar vs Row Data Store
 
-To understand a column store database it's useful to understand its counterpart, a *row store database*.
+To understand column data data stores it's useful to understand its counterpart, *row data stores*.
 Suppose you're querying a subset of columns of a data table.
 With row storage you have to read all the rows into memory and then drop the columns that you're not interested in (even if the data is partitioned by a certain column).
 With column storage you only read the columns that you're interested in.
 This is more efficient, particularly for wide data.
-In order to accomplish this type of querying you have to store the data in a column-wise format (e.g. parquet).
+In order to accomplish this type of querying you have to store the data in a column-wise format.
+Typically people will use parquet for column-wise storage and csv for row-wise storage.
 
 ## Scheduled Date vs Execution Date
 
@@ -149,3 +165,20 @@ Typically it's faster to access data from memory than it is from disk.
 Caching basically stores a portion of your data in memory. When a data request is made, you first check to see if it is in the cache.
 If it's not available then you defer to the database.
 Typically you'd want to cache data that's frequently requested by the application.
+
+## ETL
+
+Extract, transform, and load (ETL) is the process of copying data from a source location, altering it in some way, and then landing it in some target location ready for consumption by data scientists, engineers, and analysts.
+For example, and ETL process might be responsible for taking raw data for a given day (extract), de-duplicating the data (transform), and writing it to a data warehouse (load).
+
+## Operational Data Store
+
+TBD
+
+## Data Mart
+
+TBD
+
+## Data Lake
+
+TBD
