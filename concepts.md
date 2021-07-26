@@ -125,10 +125,12 @@ This will prevent jobs from duplicating data in situation where they need to be 
 
 A *SQL database* is your typical relational database.
 It contains tables whose columns have some sort of relationship between one another.
+It is a framework used to store **structured data** (e.g. csv, parquet, json)
 For example, there might be one table that contains information about movies watched by users, where movies are identified by some movie ID.
 This may be combined with another table that has movie IDs and the corresponding meta information about the movie (title, genre, runtime, etc).
 
 A *NoSQL database* is sort of a catchall for everything that is not a SQL database.
+It is a framework used to store **unstructured data** (e.g. images, documents).
 There are reasons for not storing data in relational format.
 For example, it might not be sensible to store images/audio/text files in key-value pairs instead of a relational table format (although meta information about these objects might be stored in such a way).
 Or say we want to be able to find all the users that watched a movie that a given user watched.
@@ -173,12 +175,19 @@ For example, and ETL process might be responsible for taking raw data for a give
 
 ## Operational Data Store
 
-TBD
+An operational data store (ODS) represents and integration of source data from different systems/locations to support operational reporting and decision making.
+It is exposed in a data warehouse to make it easy for users (who are making/supporting decisions) to access the data.
 
 ## Data Mart
 
-TBD
+A data mart is a subset of a data warehouse.
+A data warehouse provides information at a company-wide level, whereas a data mart provides information that's of interest to a specific team.
+Just a like a data warehouse, a data mart is used make information more easy to access than if the source data is queried directly.
 
 ## Data Lake
 
-TBD
+A data lake is a centralized repository that stores data in raw form (without any processing).
+It represents the source of truth that goes into other processes (aggregation, deduplication, etc) and stores (data warehouses) to make the data more accessible to users.
+
+A data lake can become a **data swamp** when it becomes unmanaged and its usability degrades.
+This can have a cascading impact since data lakes are data sources for data warehouses and, in some cases, data science models.
