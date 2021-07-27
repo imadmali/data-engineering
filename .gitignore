@@ -1,3 +1,5 @@
 .DS_Store
 __pycache__
 .ipynb_checkpoints
+src/dm_scala/project
+src/dm_scala/target
