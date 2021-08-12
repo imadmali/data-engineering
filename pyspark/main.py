@@ -6,7 +6,7 @@ from pyspark.sql.functions import count, sum
 
 spark = SparkSession.builder.appName('pyspark-performance').getOrCreate()
 
-file_path = 's3://imad-pyspark-test/data/parquet/small'
+file_path = 's3://imad-pyspark-test/data/wide/parquet/medium'
 loc, extension = os.path.splitext(file_path)
 print(file_path)
 seconds = []
