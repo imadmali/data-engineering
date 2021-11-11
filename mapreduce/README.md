@@ -5,7 +5,39 @@ MapReduce is a useful data aggregation design pattern. It essentially involves t
 1. **Map**: The map step involves creating key/value pairs, where the keys label the data in some way and the values quantify these labels.
 2. **Reduce**: The reduce step combines the values associated with matching keys.
 
-These steps are conceptualized in the `mapreduce.py` script. The data aggregation involved in this example is to calculate the word count from an excerpt of the science fiction book Dune. The `mapper` function takes a sentence in the excerpt, does some text cleaning, and calculates the word count. To be more transparent, two distinct steps are actually taking place: map _and_ combine (see below for details). In a more straightforward MapReduce framework the `mapper` function would only assign a value of 1 to each word (i.e. mapping without any combining). Each sentence that is input into the `mapper` function produces a word count dictionary. The final output of `map` is an array of dictionaries. 
+These steps are conceptualized in the `mapreduce.py` script.
+
+```python
+# MapReduce counting conceptualized with Python map/reduce functions
+from functools import reduce
+from collections import Counter
+import json
+
+data = ["Fear is the mind-killer",
+		"Fear is the little-death that brings total obliteration",
+		"I will face my fear",
+		"I will permit it to pass over me and through me"]
+
+# map function
+def mapper(obj):
+	clean_obj = obj.lower().split()
+	return(Counter(clean_obj))
+# reduce function
+def reducer(obj, new_obj):
+	obj.update(new_obj)
+	return(obj)
+
+# 1. A mapper (+ combiner) on each node maps a key (word) to a value (count)
+mapped_data = list(map(mapper, data))
+# 2. A shuffle normally takes place here to get similar keys
+# on the same nodes.
+# 3. A reducer combines the values associated with similar keys into final counts. 
+reduced_data = reduce(reducer, mapped_data)
+
+print(json.dumps(reduced_data, indent=4))
+```
+
+The data aggregation involved in this example is to calculate the word count from an excerpt of the science fiction book Dune. The `mapper` function takes a sentence in the excerpt, does some text cleaning, and calculates the word count. To be more transparent, two distinct steps are actually taking place: map _and_ combine (see below for details). In a more straightforward MapReduce framework the `mapper` function would only assign a value of 1 to each word (i.e. mapping without any combining). Each sentence that is input into the `mapper` function produces a word count dictionary. The final output of `map` is an array of dictionaries. 
 
 The `reducer` function takes two dictionaries and combines them into a single dictionary. The `reduce` function applies the `reducer` function over the array output produced by the `map` function. The final result is a single dictionary representing the word count for the entire excerpt.
 
