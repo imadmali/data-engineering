@@ -47,3 +47,5 @@
 🪒 Your prod role should be different than the role you develop with.
 
 🪒 Discuss the schema with stakeholders before you start.
+
+🪒 Use tools/frameworks that abstract your architecture rather than having one tool that does everything (where possible).
