@@ -1,19 +1,19 @@
 # MapReduce
 
-MapReduce is a useful data aggregation design pattern. At its core it involves two steps, a mapping step and a reducing step, in order to produce an aggregation that summarizes the input data (e.g. mean, count, sum, etc).
+MapReduce is a useful data aggregation design pattern. It essentially involves two steps, a mapping step and a reducing step, in order to produce an aggregation that aggregates the input data in some way (e.g. mean, count, sum, etc).
 
-1. **Map**: Create key/value pairs where keys label the data in some way and values quantify these labels.
-2. **Reduce**: Combine the values associated with the same keys.
+1. **Map**: The map step involves creating key/value pairs, where the keys label the data in some way and the values quantify these labels.
+2. **Reduce**: The reduce step combines the values associated with matching keys.
 
-These steps are conceptualized in the `mapreduce.py` script. The data aggregation involved is to calculate the word count from an excerpt of the science fiction book Dune. The `mapper` function takes a sentence in the excerpt, does some text cleaning, and calculates the word count. Each sentence that is input into the `mapper` function produces a word count dictionary. The final output of `map` is an array of dictionaries. 
+These steps are conceptualized in the `mapreduce.py` script. The data aggregation involved in this example is to calculate the word count from an excerpt of the science fiction book Dune. The `mapper` function takes a sentence in the excerpt, does some text cleaning, and calculates the word count. To be more transparent, two distinct steps are actually taking place: map _and_ combine (see below for details). In a more straightforward MapReduce framework the `mapper` function would only assign a value of 1 to each word (i.e. mapping without any combining). Each sentence that is input into the `mapper` function produces a word count dictionary. The final output of `map` is an array of dictionaries. 
 
-The `reducer` function takes two dictionaries and combines them into a single dictionary. The `reduce` function applies this across the array output produced by the `map` function. The final result is a single dictionary representing the word count for the entire excerpt.
+The `reducer` function takes two dictionaries and combines them into a single dictionary. The `reduce` function applies the `reducer` function over the array output produced by the `map` function. The final result is a single dictionary representing the word count for the entire excerpt.
 
-This example is highly stylized. The functions were applied sequentially over the input data; the first sentence was processed, followed by the second, and so on. The MapReduce design pattern really shines when each step can be executed in parallel over the data. Imagine trying to calculate the word count for an entire book or millions of documents. It would be inefficient to do this sequentially, one sentence at a time. When applying MapReduce in a parallel framework the mapper can assign key/value pairs to sets of input data simultaneously. Similar keys can then be sent to reducers to aggregate the associated values. This can also happen in parallel.
+This example is highly stylized. The functions were applied sequentially over the input data; the first sentence was processed, followed by the second, and so on. The MapReduce design pattern really shines when each step can be executed in parallel over the data. Imagine trying to calculate the word count for an entire book or millions of documents. It would be inefficient to do this sequentially, one sentence at a time. When running MapReduce in a parallel framework the mapper can assign key/value pairs to sets of input data simultaneously. Similar keys can then be sent to reducers to aggregate the associated values. This can also happen in parallel.
 
-Parallel execution across data is how MapReduce works in Hadoop. Although a few more steps are involved:
+MapReduce in Hadoop utilizes parallel execution over the data. Although a few more steps are involved:
 
-1. **Map**: In parallel create key/value pairs where keys label the data in some way and values quantify these labels.
+1. **Map**: In parallel, create key/value pairs where keys label the data in some way and values quantify these labels.
 2. **Combine**: Do some local aggregation where possible.
 3. **Shuffle**: Move data around so that identical keys are located on the same process/node (this is usually an expensive operation). 
 4. **Reduce**: Perform the final aggregation by combining values that share the same key.
