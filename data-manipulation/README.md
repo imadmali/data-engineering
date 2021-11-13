@@ -1,6 +1,6 @@
 # Data Manipulation
 
-The purpose of this repo is to show common data manipulations in different languages/packages in order to make it easier to move across languages.
+What initially prompted me to start this repo was to show common data manipulations in different languages/packages in order to make it easier to move across languages.
 
 Currently the following languages/packages are covered.
 * Python
