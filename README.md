@@ -1,7 +1,5 @@
 # Data Engineering
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
 <table style="width:100%">
   <tr>
     <td><img src="images/python.png"></td>
@@ -14,16 +12,15 @@
   </tr>
 </table>
 
-<div class="alert alert-primary" role="alert">
-  This is a primary alert—check it out!
-</div>
+> :warning: The contents of this repo are **living documents**. While to repo name will stay the same, the organization of the contents may change. And of course, new stuff is constantly being added.
 
-> :warning: The documents in this repo are **living documents**. While to repo name will stay the same, the organization of the contents are subject to change.
+<br>
 
-This repo is a sort of digital garden on data engineering. Each topic is meant to be self-contained and is organized into folders.
+This repo is a sort of **digital garden on data engineering**. Each topic is meant to be self-contained and is organized into folders.
 
 * `data-manipulation` - A common task (not just for data engineers) is how to manipulate data. This involves selecting, filtering, and aggregating data. For completeness and comparability I've included 
-* `design-patterns` - A collection of design patterns that I've picked up over the years.
+* `design-patterns` - (_coming soon!_) A collection of design patterns that I've picked up over the years.
+* `platforms` - (_coming soon!_) A big part of data engineering is knowing what platforms to use (e.g. Postgres, Spark, S3, etc). There's a lot out there and it's crucial to make sure the right platform is being chosen for the task at hand. Here I discuss those platforms, including simple data stores, data warehouses, and scheduling/orchestration tools.
 * `mapreduce` - A data aggregation design pattern that deserves a section of it's own. It set the foundation for big data computations across multiple machines.
-* `razors` - Some useful principles that I've codified to make my workflow better.
-* `resources` - I'm not coming up with anything new. I'm building off of some great work done by others. I list those here.
+* `razors` - (_coming soon!_) Some useful principles that I've codified to make my workflow better.
+* `resources` - (_coming soon!_) A lot of what I talk about isn't anything new. I'm building off of great work done by others. I list those here.
