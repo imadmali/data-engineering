@@ -49,3 +49,5 @@
 🪒 Discuss the schema with stakeholders before you start.
 
 🪒 Use tools/frameworks that abstract your architecture rather than having one tool that does everything (where possible).
+
+🪒 If storage costs < compute costs then it makes sense to pre-compute and store bigger tables, rather than doing this on the fly.
