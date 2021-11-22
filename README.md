@@ -2,13 +2,14 @@
 
 <table style="width:100%">
   <tr>
-    <td><img src="images/python.png"></td>
-    <td><img src="images/pandas.png"></td>
-    <td><img src="images/r.png"></td>
-    <td><img src="images/dplyr.png"></td>
-    <td><img src="images/tidyr.png"></td>
-    <td><img src="images/postgres.png"></td>
-    <td><img src="images/spark.png"></td>
+    <td><img href="" src="images/python.png"></td>
+    <td><img href="" src="images/pandas.png"></td>
+    <td><img href="" src="images/r.png"></td>
+    <td><img href="" src="images/dplyr.png"></td>
+    <td><img href="" src="images/tidyr.png"></td>
+    <td><img href="" src="images/postgres.png"></td>
+    <td><img href="" src="images/spark.png"></td>
+    <td><img href="" src="images/elasticsearch.png"></td>
   </tr>
 </table>
 
