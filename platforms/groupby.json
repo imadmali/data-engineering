@@ -1,0 +1,13 @@
+{
+    "size": 0,
+    "aggs": {
+        "A0": {
+            "terms": { "field": "id" },
+            "aggs": {
+                "A1": {
+                    "sum": { "field": "v1" }
+                }
+            }
+        }
+    }
+}

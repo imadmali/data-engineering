@@ -25,7 +25,7 @@ No that the table is defined we can insert some records. This is similar to the 
 ```bash
 curl -X PUT \
 -H 'Content-Type: application/json' \
---data-binary @fct_put.json http://localhost:9200/fct_table/_bulk
+--data-binary @fct_put.json http://localhost:9200/fct_table/_bulk?pretty=true
 ```
 
 List all indices. This can be done in a couple ways.
@@ -38,14 +38,20 @@ curl http://localhost:9200/_aliases?pretty=true
 Get the schema of an index. This is similar to the `DESCRIBE` command in SQL.
 
 ```bash
-curl curl http://localhost:9200/fct_table/_mapping?pretty=true
+curl http://localhost:9200/fct_table/_mapping?pretty=true
+```
+
+Delete an index. This is similar to the `DROP TABLE` command in SQL.
+
+```bash
+curl -X DELETE http://localhost:9200/fct_table 
 ```
 
 ## Select
 
 ```bash
 curl -H 'Content-Type: application/json' \
--d @search.json http://localhost:9200/fct_mapping/_search?pretty=true
+-d @select.json http://localhost:9200/fct_table/_search?pretty=true
 ```
 
 ```json
@@ -57,6 +63,60 @@ curl -H 'Content-Type: application/json' \
 
 ## Sorting
 
+```bash
+curl -H 'Content-Type: application/json' \
+-d @sort.json http://localhost:9200/fct_table/_search?pretty=true
+```
+
+```json
+{
+    "size": 10,
+    "sort": [
+        {"v1": {"order": "asc"}}
+    ]
+}
+```
+
 ## Filter/Where
 
+```bash
+curl -H 'Content-Type: application/json' \
+-d @filter.json http://localhost:9200/fct_table/_search?pretty=true
+```
+
+```json
+{
+    "size": 10,
+    "query": {
+        "bool": {
+            "must": [
+                {"term": {"id": "a"}},
+                {"term": {"v1": 8}}
+            ]
+        }
+    }
+}
+```
+
 ## Group By
+
+```bash
+curl -H 'Content-Type: application/json' \
+-d @groupby.json http://localhost:9200/fct_table/_search?pretty=true
+```
+
+```json
+{
+    "size": 0,
+    "aggs": {
+        "A0": {
+            "terms": { "field": "id" },
+            "aggs": {
+                "A1": {
+                    "sum": { "field": "v1" }
+                }
+            }
+        }
+    }
+}
+```
