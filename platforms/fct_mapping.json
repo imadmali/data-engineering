@@ -1,0 +1,10 @@
+{
+    "mappings": {
+      "properties": {
+        "id": { "type": "keyword"},
+        "v0": { "type": "long"},
+        "v1": { "type": "long"},
+        "v2": { "type": "keyword"}
+      }
+    }
+  }
