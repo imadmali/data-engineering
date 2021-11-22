@@ -7,6 +7,8 @@
     <td><img href="" src="images/r.png"></td>
     <td><img href="" src="images/dplyr.png"></td>
     <td><img href="" src="images/tidyr.png"></td>
+  </tr>
+  <tr>
     <td><img href="" src="images/postgres.png"></td>
     <td><img href="" src="images/spark.png"></td>
     <td><img href="" src="images/elasticsearch.png"></td>

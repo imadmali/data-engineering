@@ -3,7 +3,9 @@
     "query": {
         "bool": {
             "must": [
-                {"term": {"id": "a"}},
+                {"term": {"id": "a"}}
+            ],
+            "must not": [
                 {"term": {"v1": 8}}
             ]
         }
