@@ -2,13 +2,13 @@
 
 # Elasticsearch
 
-Elasticsearch is a data manipulation tool, but it doesn't really belong in the data-manipulation section. It's very different from a typical SQL database. It initially started as a way to efficiently search text data, but has evolved to support most data types. While true, I still feel that you're better off using more SQL-native tools as your main database (Postgres, Snowflake, etc).
+Elasticsearch is another data manipulation framework, but it doesn't really belong in the [data-manipulation](../data-manipulation/README.md) section. It differs from typical SQL databases (postgres) or SQL-like APIs (pyspark, pandas, dplyr). Elasticsearch considers sets of records rather than focusing on tables. It initially started as a way to efficiently search text data, but has evolved to support a variety of data types. In most situations you'll probably be better off using more SQL-native tools as your analytics data store (Postgres, Snowflake, etc). SQL is commonly known, and its table-based structure allows you to define well thought out data models to organize your data.
 
-One of the biggest shortcomings is how much it deviates from SQL. It has it's own query language that is specified in JSON. It also returns JSON objects. Depending on your data and query complexity you could end up with some heavily nested queries/results which can require extra effort to debug/parse.
+In my opinion, one of the biggest shortcomings of Elasticsearch is how much it deviates from SQL. It has it's own query language that is specified in JSON. Your queries also returns JSON objects, not tables. Depending on your data and query complexity you could end up with some heavily nested JSON objects that you have to manage. This leads to some extra debugging/parsing effort.
 
-The platform also isn't optimized for SQL-like joins. This requires you to throw out commonly used data models that are extremely useful to organize data and data relationships.
+It's worth noting that there is a way to [wrap SQL queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-getting-started.html in their REST API. But it is limited compared to SQL-native platforms. For example, (at the time of writing) if you have a nested JSON you can't perform aggregations on the nested fields using SQL. You have to use their custom query language.
 
-It's worth noting that Elasticsearch does allow you to execute SQL queries. But it is limited. For example, (at the time of writing) if you have a nested JSON you can't perform aggregations using SQL. You have to use their query language.
+Elasticsearch also isn't optimized for SQL-like joins. This requires you to throw out commonly used data models that are extremely useful at organizing data and data relationships.
 
 Additionally, all your requests to Elasticsearch are made through a REST API. While a lot of platforms do this, the user isn't usually exposed to it (it happens under the hood of the platform's UI or command line tools). If you're using Mac/Linux you can use the [curl](https://man7.org/linux/man-pages/man1/curl.1.html) utility to submit these requests.
 
@@ -24,7 +24,9 @@ With all that in mind you may find yourself using Elasticsearch, so it's useful 
 
 </center>
 
-The next section shows how to create an index in Elasticsearch and populate it with data. The sections that follow show how to query that index using the Elasticsearch Query DSL (domain specific language).
+The next section shows how to create an index in Elasticsearch and populate it with some data. The sections that follow show how to query that index using the Elasticsearch Query DSL (domain specific language).
+
+I ran these commands against a simple docker container running Elasticsearch. Refer to the documentation [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html) to spin one up.
 
 ## Create and Populate Index
 
@@ -36,7 +38,7 @@ curl -X PUT \
 -d @fct_mapping.json http://localhost:9200/fct_table
 ```
 
-The `fct_mapping.json` request creates a table with the following schema.
+The `fct_mapping.json` request above creates an index with the following schema.
 
 | Name | Type |
 | --- | --- |
@@ -45,7 +47,7 @@ The `fct_mapping.json` request creates a table with the following schema.
 | v1 |  long |
 | v2 |  keyword (this gets normalized to lowercase) |
 
-Now that the table is defined we can insert some records. This is similar to the `INSERT INTO` SQL command.
+Now that the index is defined we can insert some documents. This is similar to the `INSERT INTO` SQL command, which is used to insert records into a table.
 
 ```bash
 curl -X PUT \
@@ -53,7 +55,7 @@ curl -X PUT \
 --data-binary @fct_put.json http://localhost:9200/fct_table/_bulk?pretty=true
 ```
 
-The format of the JSON request looks like this.
+The format of the JSON request I'm sending looks like this.
 
 ```json
 {"index" : {}}
@@ -78,20 +80,22 @@ The format of the JSON request looks like this.
 {"id": "A", "v0": -5.293135681469833, "v1": 3, "v2": "N"}
 ```
 
-List all indices available on the cluster. This can be done in a couple ways.
+Now that we've setup the data we can run some useful utility functions.
+
+**List all indices available on the cluster**. This can be done in a couple ways.
 
 ```bash
 curl http://localhost:9200/_cat/indices?v=true
 curl http://localhost:9200/_aliases?pretty=true
 ```
 
-Get the schema of an index. This is similar to the `DESCRIBE` command in SQL.
+**Get the schema of an index**. This is similar to the `DESCRIBE` command in SQL.
 
 ```bash
 curl http://localhost:9200/fct_table/_mapping?pretty=true
 ```
 
-Delete an index. This is similar to the `DROP TABLE` command in SQL.
+**Delete an index**. This is similar to the `DROP TABLE` command in SQL.
 
 ```bash
 curl -X DELETE http://localhost:9200/fct_table 
@@ -99,9 +103,9 @@ curl -X DELETE http://localhost:9200/fct_table
 
 ## Query DSL
 
-The sections that follow will use query DSL. It's quite different from traditional SQL. You have to specify your queries in JSON format. Elasticsearch has extensive documentation on [query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) on their website.
+The sections that follow will use Elasticsearch query DSL. It's quite different from traditional SQL. You have to specify your queries in JSON format and send them through a REST API. Elasticsearch has extensive documentation on [query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) on their website.
 
-## Select
+### Select
 
 Return data from specified fields only.
 
@@ -117,7 +121,7 @@ curl -H 'Content-Type: application/json' \
 }
 ```
 
-## Sorting
+### Sorting
 
 Rearrange the data in ascending/descending order based on a specific field.
 
@@ -135,9 +139,9 @@ curl -H 'Content-Type: application/json' \
 }
 ```
 
-## Filter/Where
+### Filter/Where
 
-Return data with only certain documents included/excluded.
+Return data with certain documents included/excluded based on conditions applied against certain fields.
 
 ```bash
 curl -H 'Content-Type: application/json' \
@@ -158,9 +162,9 @@ curl -H 'Content-Type: application/json' \
 }
 ```
 
-## Group By
+### Group By
 
-The nesting can get particularly messy for aggregate queries. Below we aggregate at the id-level. The aggregate `"A0"` calculates a count within each id group. The (nested) aggregate `"A1"` calculates the sum of the v1 field within each id group.
+Perform basic calculations on groups of fields. The nesting can get particularly messy for aggregate queries. Below we aggregate at the id-level. The aggregate `"A0"` calculates a count within each id group. The (nested) aggregate `"A1"` calculates the sum of the v1 field within each id group.
 
 ```bash
 curl -H 'Content-Type: application/json' \
@@ -183,7 +187,7 @@ curl -H 'Content-Type: application/json' \
 }
 ```
 
-## Advanced
+## Advanced Queries
 
 ### Wildcard
 
