@@ -1,0 +1,18 @@
+{
+    "size": 0,
+    "aggs": {
+        "A0": {
+            "terms": { "field": "id" },
+            "aggs": {
+                "A1" : {
+                    "nested": {"path": "words"},
+                    "aggs": {
+                        "A2": {
+                            "terms": { "field": "words.v2" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

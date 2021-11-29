@@ -1,0 +1,15 @@
+{
+    "size": 10,
+    "query": {
+        "nested": {
+            "path": "words",
+            "query": {
+                "bool": {
+                    "must": [
+                        {"match": {"words.v2": "y"}}
+                    ]
+                }
+            }
+        }
+    }
+}

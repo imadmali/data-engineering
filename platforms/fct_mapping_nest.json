@@ -1,0 +1,15 @@
+{
+    "mappings": {
+      "properties": {
+        "id": { "type": "keyword"},
+        "v0": { "type": "long"},
+        "words": {
+          "type": "nested",
+          "properties": {
+            "v1": {"type": "text"},
+            "v2": {"type": "keyword"}
+          }
+        }
+      }
+    }
+  }

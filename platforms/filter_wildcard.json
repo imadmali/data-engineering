@@ -1,0 +1,10 @@
+{
+    "size": 10,
+    "query": {
+        "bool": {
+            "must": [
+                {"wildcard": {"id": "A"}}
+            ]
+        }
+    }
+}

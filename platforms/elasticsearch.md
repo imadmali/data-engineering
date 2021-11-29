@@ -6,7 +6,7 @@ Elasticsearch is another data manipulation framework, but it doesn't really belo
 
 In my opinion, one of the biggest shortcomings of Elasticsearch is how much it deviates from SQL. It has it's own query language that is specified in JSON. Your queries also returns JSON objects, not tables. Depending on your data and query complexity you could end up with some heavily nested JSON objects that you have to manage. This leads to some extra debugging/parsing effort.
 
-It's worth noting that there is a way to [wrap SQL queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-getting-started.html in their REST API. But it is limited compared to SQL-native platforms. For example, (at the time of writing) if you have a nested JSON you can't perform aggregations on the nested fields using SQL. You have to use their custom query language.
+It's worth noting that there is a way to [wrap SQL queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-getting-started.html) in their REST API. But it is limited compared to SQL-native platforms. For example, (at the time of writing) if you have a nested JSON you can't perform aggregations on the nested fields using SQL. You have to use their custom query language.
 
 Elasticsearch also isn't optimized for SQL-like joins. This requires you to throw out commonly used data models that are extremely useful at organizing data and data relationships.
 
@@ -189,10 +189,133 @@ curl -H 'Content-Type: application/json' \
 
 ## Advanced Queries
 
-### Wildcard
+We'll need to insert some more complex data into the database to explore some of the advanced queries listed below.
+
+```bash
+curl -X PUT \
+-H 'Content-Type: application/json' \
+-d @fct_mapping_nest.json http://localhost:9200/fct_table_nest
+
+curl -X PUT \
+-H 'Content-Type: application/json' \
+--data-binary @fct_nest_put.json http://localhost:9200/fct_table_nest/_bulk?pretty=true
+```
+
+Here's the data we're inserting.
+
+```json
+{"index" : {}}
+{"id": "A", "v0": 4.162335551296317, "words": [{"v1": "annihilation", "v2": "N"}]}
+{"index" : {}}
+{"id": "E", "v0": -3.463043847744304, "words": [{"v1": "authority", "v2": "Y"}]}
+{"index" : {}}
+{"id": "A", "v0": 4.116661961802513, "words": [{"v1": "acceptance", "v2": "N"}]}
+{"index" : {}}
+{"id": "B", "v0": 2.1683668815994643, "words": [{"v1": "the bone clocks", "v2": "N"}]}
+{"index" : {}}
+{"id": "C", "v0": 5.940306422779212, "words": [{"v1": "house of leaves", "v2": "Y"}]}
+{"index" : {}}
+{"id": "B", "v0": -5.350971634624138, "words": [{"v1": "ecotopia", "v2": "Y"}]}
+{"index" : {}}
+{"id": "B", "v0": 3.094433010031948, "words": [{"v1": "the forever war", "v2": "N"}]}
+{"index" : {}}
+{"id": "B", "v0": -3.568400083224966, "words": [{"v1": "a scanner darkly", "v2": "N"}]}
+{"index" : {}}
+{"id": "D", "v0": -6.691328447186232, "words": [{"v1": "the stars my destination", "v2": "Y"}]}
+{"index" : {}}
+{"id": "A", "v0": -5.293135681469833, "words": [{"v1": "three californias", "v2": "N"}]}
+```
+
+### Wildcard Filter
+
+```bash
+curl -H 'Content-Type: application/json' \
+-d @filter_wildcard.json http://localhost:9200/fct_table_nest/_search?pretty=true
+```
+
+```json
+{
+    "size": 10,
+    "query": {
+        "bool": {
+            "must": [
+                {"wildcard": {"id": "A"}}
+            ]
+        }
+    }
+}
+```
 
 ### Nested Filter
 
-### Filtered Aggregate
+```bash
+curl -H 'Content-Type: application/json' \
+-d @filter_nest.json http://localhost:9200/fct_table_nest/_search?pretty=true
+```
 
-### Nested Aggregate
+```json
+{
+    "size": 10,
+    "query": {
+        "nested": {
+            "path": "words",
+            "query": {
+                "bool": {
+                    "must": [
+                        {"match": {"words.v2": "y"}}
+                    ]
+                }
+            }
+        }
+    }
+}
+```
+
+### Group By Filter
+
+```bash
+curl -H 'Content-Type: application/json' \
+-d @groupby_filter.json http://localhost:9200/fct_table_nest/_search?pretty=true
+```
+
+```json
+{
+    "size": 0,
+    "aggs": {
+        "A0": {
+            "terms": {
+                "field": "id",
+                "exclude": ["A", "B"]
+            }
+        }
+    }
+}
+```
+
+### Group By Nested
+
+```bash
+curl -H 'Content-Type: application/json' \
+-d @groupby_nested.json http://localhost:9200/fct_table_nest/_search?pretty=true
+```
+
+```json
+{
+    "size": 0,
+    "aggs": {
+        "A0": {
+            "terms": { "field": "id" },
+            "aggs": {
+                "A1" : {
+                    "nested": {"path": "words"},
+                    "aggs": {
+                        "A2": {
+                            "terms": { "field": "words.v2" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```

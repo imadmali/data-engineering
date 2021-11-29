@@ -1,0 +1,11 @@
+{
+    "size": 0,
+    "aggs": {
+        "A0": {
+            "terms": {
+                "field": "id",
+                "exclude": ["A", "B"]
+            }
+        }
+    }
+}
