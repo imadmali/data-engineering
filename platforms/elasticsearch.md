@@ -226,7 +226,9 @@ Here's the data we're inserting.
 {"id": "A", "v0": -5.293135681469833, "words": [{"v1": "three californias", "v2": "N"}]}
 ```
 
-### Wildcard Filter
+### Regexp/Wildcard Filter
+
+Being able to filter using regular expression wildcard terms.
 
 ```bash
 curl -H 'Content-Type: application/json' \
@@ -239,7 +241,7 @@ curl -H 'Content-Type: application/json' \
     "query": {
         "bool": {
             "must": [
-                {"wildcard": {"id": "A"}}
+                {"regexp": {"id": "A.*|B.*"}}
             ]
         }
     }

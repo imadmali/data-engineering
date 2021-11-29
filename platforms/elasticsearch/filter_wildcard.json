@@ -3,7 +3,7 @@
     "query": {
         "bool": {
             "must": [
-                {"wildcard": {"id": "A"}}
+                {"regexp": {"id": "A.*|B.*"}}
             ]
         }
     }
