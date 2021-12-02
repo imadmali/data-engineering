@@ -1,3 +1,7 @@
+<p align="center">
+<img href="" src="../images/dm_title.png">
+</p>
+
 # Data Manipulation
 
 What initially prompted me to start this repo was to show common data manipulations in different languages/packages in order to make it easier to move across languages.
@@ -63,6 +67,10 @@ identifier |  info  | region
 
 ## <a name="read-data"></a> Read Data
 
+<p align="center">
+<img href="" src="../images/dm_io.png" width="300">
+</p>
+
 **Python - Pandas**
 
 ```python
@@ -109,6 +117,8 @@ COPY dim_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
 
 ## <a name="schema"></a> Schema
 
+<img href="" src="../images/dm_schema.png">
+
 **Python - Pandas**
 
 ```python
@@ -140,6 +150,8 @@ WHERE table_name = 'fact_table';
 ```
 
 ## <a name="rename-columns"></a> Rename Columns
+
+<img href="" src="../images/dm_rename.png">
 
 **Python - Pandas**
 
@@ -179,6 +191,8 @@ FROM fact_table;
 ```
 
 ## <a name="create-columns"></a> Create/Drop Columns
+
+<img href="" src="../images/dm_newcolumn.png">
 
 **Python - Pandas**
 
@@ -237,6 +251,8 @@ FROM fact_table;
 
 ## <a name="select"></a> Select
 
+<img href="" src="../images/dm_select.png">
+
 **Python - Pandas**
 
 ```python
@@ -278,6 +294,8 @@ FROM fact_table;
 ```
 
 ## <a name="conditions"></a> Conditions (Case Statements)
+
+<img href="" src="../images/dm_condition.png">
 
 **Python - Pandas**
 
@@ -328,6 +346,8 @@ FROM fact_table;
 
 ## <a name="sorting"></a> Sorting
 
+<img href="" src="../images/dm_sort.png">
+
 **Python - Pandas**
 
 ```python
@@ -357,6 +377,8 @@ ORDER BY id, v0 DESC;
 ```
 
 ## <a name="filter"></a> Filter/Where
+
+<img href="" src="../images/dm_where.png">
 
 **Python - Pandas**
 
@@ -451,6 +473,8 @@ WHERE id ~ 'A|B';
 
 ## <a name="groupby"></a> Group By
 
+<img href="" src="../images/dm_groupby.png">
+
 **Python - Pandas**
 
 ```python
@@ -490,6 +514,8 @@ GROUP BY id;
 ```
 
 ## <a name="window-functions"></a> Window Functions
+
+<img href="" src="../images/dm_window.png">
 
 **Python - Pandas**
 
@@ -605,6 +631,8 @@ AS ct(id CHAR, N INT, Y INT);
 
 ## <a name="join"></a> Join
 
+<img href="" src="../images/dm_joins.png">
+
 **Python - Pandas**
 
 ```python
@@ -634,6 +662,8 @@ ON f.id = d.identifier;
 ```
 
 ## <a name="union"></a> Union
+
+<img href="" src="../images/dm_union.png">
 
 **Python - Pandas**
 
@@ -670,6 +700,8 @@ FROM fact_table;
 ```
 
 ## <a name="udf"></a> UDF
+
+<img href="" src="../images/dm_udf.png">
 
 **Python - Pandas**
 
