@@ -20,7 +20,7 @@ This repo is a sort of **digital garden on data engineering**. Each topic is mea
 
 * `data-manipulation` - A common task (not just for data engineers) is how to manipulate data. This involves selecting, filtering, and aggregating data. For completeness and comparability I've included various languages and packages within those languages.
 * `design-patterns` - (_coming soon!_) A collection of design patterns that I've picked up over the years.
-* `platforms` - (_coming soon!_) A big part of data engineering is knowing what platforms to use (e.g. Postgres, Spark, S3, etc). There's a lot out there and it's crucial to make sure the right platform is being chosen for the task at hand. Here I discuss those platforms, including simple data stores, data warehouses, and scheduling/orchestration tools.
+* `platforms` - (_coming soon!_) A big part of data engineering is knowing what platforms to use (e.g. Airflow, Postgres, Spark, S3, etc). There's a lot out there and it's crucial to make sure the right platform is being chosen for the task at hand. Here I discuss those platforms, including simple data stores, data warehouses, and scheduling/orchestration tools.
 * `mapreduce` - A data aggregation design pattern that deserves a section of it's own. It set the foundation for big data computations across multiple machines.
 * `razors` - (_coming soon!_) Some useful principles that I've codified to make my workflow better.
 * `resources` - (_coming soon!_) A lot of what I talk about isn't anything new. I'm building off of great work done by others. I list those here.

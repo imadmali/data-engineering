@@ -1,6 +1,8 @@
+<!---
 <p align="center">
 <img href="" src="../images/dm_title.png">
 </p>
+--->
 
 # Data Manipulation
 
@@ -67,9 +69,11 @@ identifier |  info  | region
 
 ## <a name="read-data"></a> Read Data
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_io.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -117,9 +121,11 @@ COPY dim_table FROM '/data/dim_table.csv' DELIMITER ',' CSV HEADER;
 
 ## <a name="schema"></a> Schema
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_schema.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -153,9 +159,11 @@ WHERE table_name = 'fact_table';
 
 ## <a name="rename-columns"></a> Rename Columns
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_rename.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -196,9 +204,11 @@ FROM fact_table;
 
 ## <a name="create-columns"></a> Create/Drop Columns
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_newcolumn.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -257,9 +267,11 @@ FROM fact_table;
 
 ## <a name="select"></a> Select
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_select.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -303,9 +315,11 @@ FROM fact_table;
 
 ## <a name="conditions"></a> Conditions (Case Statements)
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_condition.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -356,9 +370,11 @@ FROM fact_table;
 
 ## <a name="sorting"></a> Sorting
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_sort.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -390,9 +406,11 @@ ORDER BY id, v0 DESC;
 
 ## <a name="filter"></a> Filter/Where
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_where.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -487,9 +505,11 @@ WHERE id ~ 'A|B';
 
 ## <a name="groupby"></a> Group By
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_groupby.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -531,9 +551,11 @@ GROUP BY id;
 
 ## <a name="window-functions"></a> Window Functions
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_window.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -649,9 +671,11 @@ AS ct(id CHAR, N INT, Y INT);
 
 ## <a name="join"></a> Join
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_joins.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -683,9 +707,11 @@ ON f.id = d.identifier;
 
 ## <a name="union"></a> Union
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_union.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
@@ -723,9 +749,11 @@ FROM fact_table;
 
 ## <a name="udf"></a> UDF
 
+<!---
 <p align="center">
 <img href="" src="../images/dm_udf.png" width="300">
 </p>
+--->
 
 **Python - Pandas**
 
